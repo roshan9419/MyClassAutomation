@@ -4,6 +4,9 @@ import datetime
 try:
 	from selenium import webdriver
 	from selenium.webdriver.common.keys import Keys
+	from selenium.webdriver.support.ui import WebDriverWait
+	from selenium.webdriver.support import expected_conditions as EC
+	from selenium.webdriver.common.by import By
 except Exception as e:
 	print('Requirement Not Satisfied !')
 	print("Download necessary files, using commands:")
@@ -14,37 +17,52 @@ except Exception as e:
 try:
 	driver = webdriver.Chrome('./chromedriver')
 	# driver.maximize_window()
+	print("Browser Opened")
 	driver.get("https://myclass.lpu.in/")
 except Exception as e:
-	print('Download ChromeDriver, of same version as Chrome')
+	print('Download ChromeDriver, of same version as of Chrome')
 	print('https://chromedriver.chromium.org/downloads')
 	sleep(10)
 	quit()
 
 def login():
-	user_field = driver.find_element_by_xpath('//*[@id="txtUserName"]')
-	user_field.send_keys("11903306")
-	pass_field = driver.find_element_by_xpath('//*[@id="txtPassword"]')
-	pass_field.send_keys("9419Roshank@")
-	pass_field.send_keys(Keys.RETURN)
+	try:
+		user_field = driver.find_element_by_xpath('//*[@id="txtUserName"]')
+		user_field.send_keys("11903306")
+		pass_field = driver.find_element_by_xpath('//*[@id="txtPassword"]')
+		pass_field.send_keys("9419Roshank@")
+		pass_field.send_keys(Keys.RETURN)
+	except Exception as e:
+		print("Something ocurred while logging !")
+		sleep(5)
+		driver.quit()
+		quit()
+	print('Login Done')
 
 def goToClass():
-	sleep(1) # wait till the table datas are not updated
-	maxClasses = 6
-	grayColor = '128'
-	for i in range(1, maxClasses):
+	try:
+		element = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div[1]/div[2]/a[1]')))
+	except Exception as e:
+		print("Its Holiday, enjoy your day")
+		sleep(5)
+		driver.quit()
+		quit()
+
+	maxClasses = 7 #maximum classes in a week
+	grayColor = '128, 128, 128'
+	for i in range(1, maxClasses+2):
 		try:
 			sub = driver.find_element_by_xpath('//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div[1]/div[2]/a['+str(i)+']')
 			bgColor = sub.value_of_css_property('background')
-		except:
+		except Exception as e:
 			print('All classes are completed, Come Next Day')
-			return
+			sleep(5)
+			driver.quit()
+			quit()
 		if(grayColor not in bgColor):
-			# print(bgColor)
 			sub.click()
 			break
 	joinClass()
-
 
 def joinClass():
 	sleep(0.5)
@@ -53,11 +71,23 @@ def joinClass():
 		joinButton.click()
 	except Exception as e:
 		print("Class is Not Started Yet")
+		sleep(5)
+		quit()
+	print("Joined Class")
+	chooseMode()
 
 def chooseMode():
-	# speakMode = driver.find_element_by_xpath('')
-	# listenMode = driver.find_element_by_xpath('')
-	pass
+	sleep(10)
+	try:
+		frame = driver.find_element_by_xpath('//frame[@id="frame"]')
+		driver.switch_to.frame(frame)
+		listenMode = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/span/button[2]')))
+		listenMode.click()
+	except Exception as e:
+		print("Panel is Not Visible")
+		quit()
+	print("Listen Mode Selected")
+	wishTeacher()
 
 def wishTeacher():
 	now = datetime.datetime.now()
@@ -68,44 +98,30 @@ def wishTeacher():
 	else:
 		wish="Good Evening"
 
-	chatbox = driver.find_element_by_xpath('//*[@id="message-input"]')
-	chatbox.send_keys(wish)
-	chatbox.send_keys(Keys.RETURN)
+	sleep(2)
+	try:
+		frame = driver.find_element_by_xpath('//frame[@id="frame"]')
+		driver.switch_to.frame(frame)
+		chatbox = driver.find_element_by_id("message-input")
+		chatbox.send_keys(wish)
+		chatbox.send_keys(Keys.RETURN)
+	except Exception as e:
+		print("Unable to wish the teacher")
+		quit()
+	# chatbox = driver.find_element_by_xpath('/html/body/div/main/section/div[4]/section/div/form/div[1]/textarea')
+	# chatbox = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, 'message-input')))
+	print("Teacher Wished")
 
 login()
-homePage = driver.find_element_by_xpath('//*[@id="homeCenterDiv"]/div/div[1]/div/div[2]/a')
-homePage.click()
+homePage = driver.find_element_by_xpath('//*[@id="homeCenterDiv"]/div/div[1]/div/div[2]/a').click()
+print('HomePage')
+
 goToClass()
-
-# chooseMode()
-# wishTeacher()
-
 sleep(3)
-driver.close() # to close the browser and driver
-driver.quit() #closes all the tabs
-
-
-
-#Join Button
-# //*[@id="meetingSummary"]/div/div/a
-
-#Chat box
-# //*[@id="message-input"]
-
-# print(driver.title)
+print('Successfully Executed')
+# driver.close() # to close the browser and driver
+# driver.quit() #closes all the tabs
 
 # CSS ID: .find_element_by_id(“id-search-field”)
 # DOM Path: .find_element_by_xpath(“//input[@id=’id-search-field’]”)
 # CSS class: .find_element_by_class_name(“search-field”)
-
-
-# print(driver.current_url)
-
-
-'''
-//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div/div[2]/a[1]
-//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div/div[2]/a[2]
-//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div/div[2]/a[3]
-//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div/div[2]/a[4]
-//*[@id="calendar"]/div[2]/div/table/tbody/tr/td/div/div/div[3]/table/tbody/tr/td[2]/div/div[2]/a[5]
-'''
