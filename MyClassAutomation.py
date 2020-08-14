@@ -29,9 +29,9 @@ except Exception as e:
 def login():
 	try:
 		user_field = driver.find_element_by_xpath('//*[@id="txtUserName"]')
-		user_field.send_keys("RedID")
+		user_field.send_keys("RedID") # Your Registration ID
 		pass_field = driver.find_element_by_xpath('//*[@id="txtPassword"]')
-		pass_field.send_keys("Password")
+		pass_field.send_keys("Password") # Your Password
 		pass_field.send_keys(Keys.RETURN)
 	except Exception as e:
 		print("Fail: Something ocurred while logging !")
