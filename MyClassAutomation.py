@@ -7,17 +7,18 @@ try:
 	from selenium.webdriver.support.ui import WebDriverWait
 	from selenium.webdriver.support import expected_conditions as EC
 	from selenium.webdriver.common.by import By
+	print('Pass: Requirement Satisfied')
 except Exception as e:
 	print('Requirement Not Satisfied !')
 	print("Download necessary files, using commands:")
 	print('pip install selenium')
 	sleep(5)
 	quit()
-	
+
 try:
 	driver = webdriver.Chrome('./chromedriver')
-	# driver.maximize_window()
-	print("Browser Opened")
+	driver.maximize_window()
+	print("Pass: Browser Opened")
 	driver.get("https://myclass.lpu.in/")
 except Exception as e:
 	print('Download ChromeDriver, of same version as of Chrome')
@@ -28,16 +29,16 @@ except Exception as e:
 def login():
 	try:
 		user_field = driver.find_element_by_xpath('//*[@id="txtUserName"]')
-		user_field.send_keys("RegID")
+		user_field.send_keys("11903306")
 		pass_field = driver.find_element_by_xpath('//*[@id="txtPassword"]')
-		pass_field.send_keys("Password")
+		pass_field.send_keys("9419Roshank@")
 		pass_field.send_keys(Keys.RETURN)
 	except Exception as e:
-		print("Something ocurred while logging !")
-		sleep(5)
+		print("Fail: Something ocurred while logging !")
 		driver.quit()
 		quit()
-	print('Login Done')
+	print('Pass: Login Done')
+
 
 def goToClass():
 	try:
@@ -65,7 +66,6 @@ def goToClass():
 	joinClass()
 
 def joinClass():
-	sleep(0.5)
 	try:
 		joinButton = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="meetingSummary"]/div/div/a')))
 		# joinButton = driver.find_element_by_xpath('//*[@id="meetingSummary"]/div/div/a')
@@ -74,53 +74,52 @@ def joinClass():
 		print("Class is Not Started Yet")
 		sleep(5)
 		quit()
-	print("Joined Class")
+	print("Pass: Joined Class")
 	chooseMode()
 
 def chooseMode():
 	# sleep(10)
 	try:
 		frame = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="frame"]')))
-		# frame = driver.find_element_by_xpath('//*[@id="frame"]')
 		driver.switch_to.frame(frame)
 		listenMode = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/span/button[2]')))
 		listenMode.click()
 	except Exception as e:
-		print("Panel is Not Visible")
+		print("Fail: Audio Mode is Not Visible")
 		quit()
-	print("Listen Mode Selected")
+	print("Pass: Listen Mode Selected")
 	wishTeacher()
 
 def wishTeacher():
 	now = datetime.datetime.now()
 	if(now.hour<12):
 		wish="Good Morning"
-	elif(now.hour>=12 and now.hour<=4):
+	elif(now.hour>=12 and now.hour<=24):
 		wish="Good Afternoon"
 	else:
 		wish="Good Evening"
 
 	# sleep(2)
 	try:
-		# frame = driver.find_element_by_xpath('//frame[@id="frame"]')
-		# driver.switch_to.frame(frame)
 		chatbox = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID,"message-input"))) 
-		# chatbox = driver.find_element_by_id("message-input")
 		chatbox.send_keys(wish)
 		chatbox.send_keys(Keys.RETURN)
 	except Exception as e:
-		print("Unable to wish the teacher")
+		print("Fail: Unable to wish the teacher")
 		quit()
-	# chatbox = driver.find_element_by_xpath('/html/body/div/main/section/div[4]/section/div/form/div[1]/textarea')
-	# chatbox = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.ID, 'message-input')))
-	print("Teacher Wished")
+	print("Pass: Teacher Wished")
 
 login()
-homePage = driver.find_element_by_xpath('//*[@id="homeCenterDiv"]/div/div[1]/div/div[2]/a').click()
-print('HomePage')
+try:
+	homePage = driver.find_element_by_xpath('//*[@id="homeCenterDiv"]/div/div[1]/div/div[2]/a').click()
+	print('Pass: HomePage')
+except:
+	print("Fail: Unable to Login !")
+	driver.quit()
+	quit()
 
 goToClass()
 sleep(3)
-print('Successfully Executed')
+print('Pass: Successfully Executed')
 # driver.close() # to close the browser and driver
 # driver.quit() #closes all the tabs
