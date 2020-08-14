@@ -1,5 +1,6 @@
 from time import sleep
 import datetime
+import os
 
 try:
 	from selenium import webdriver
@@ -10,8 +11,11 @@ try:
 	print('Pass: Requirement Satisfied')
 except Exception as e:
 	print('Requirement Not Satisfied !')
-	print("Download necessary files, using commands:")
-	print('pip install selenium')
+	choice = input("Do you want to Download Selenium (Y/N): ")
+	if(choice.lower()=="y"):
+		os.system("pip install selenium")
+	else:
+		print("Download necessary files, using command ( pip install selenium )")
 	sleep(5)
 	quit()
 
