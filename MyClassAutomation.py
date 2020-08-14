@@ -21,7 +21,7 @@ try:
 	print("Pass: Browser Opened")
 	driver.get("https://myclass.lpu.in/")
 except Exception as e:
-	print('Download ChromeDriver, of same version as of Chrome')
+	print('Download ChromeDriver, of same version as of Chrome and place the chromedriver.exe file in Same directory')
 	print('https://chromedriver.chromium.org/downloads')
 	sleep(10)
 	quit()
