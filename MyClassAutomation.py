@@ -30,7 +30,7 @@ def login():
 		user_field = driver.find_element_by_xpath('//*[@id="txtUserName"]')
 		user_field.send_keys("RegID")
 		pass_field = driver.find_element_by_xpath('//*[@id="txtPassword"]')
-		pass_field.send_keys("Password") 
+		pass_field.send_keys("Password")
 		pass_field.send_keys(Keys.RETURN)
 	except Exception as e:
 		print("Something ocurred while logging !")
@@ -67,7 +67,8 @@ def goToClass():
 def joinClass():
 	sleep(0.5)
 	try:
-		joinButton = driver.find_element_by_xpath('//*[@id="meetingSummary"]/div/div/a')
+		joinButton = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="meetingSummary"]/div/div/a')))
+		# joinButton = driver.find_element_by_xpath('//*[@id="meetingSummary"]/div/div/a')
 		joinButton.click()
 	except Exception as e:
 		print("Class is Not Started Yet")
@@ -77,9 +78,10 @@ def joinClass():
 	chooseMode()
 
 def chooseMode():
-	sleep(10)
+	# sleep(10)
 	try:
-		frame = driver.find_element_by_xpath('//frame[@id="frame"]')
+		frame = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="frame"]')))
+		# frame = driver.find_element_by_xpath('//*[@id="frame"]')
 		driver.switch_to.frame(frame)
 		listenMode = WebDriverWait(driver, 20).until(EC.visibility_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[1]/div/div/span/button[2]')))
 		listenMode.click()
@@ -98,11 +100,12 @@ def wishTeacher():
 	else:
 		wish="Good Evening"
 
-	sleep(2)
+	# sleep(2)
 	try:
-		frame = driver.find_element_by_xpath('//frame[@id="frame"]')
-		driver.switch_to.frame(frame)
-		chatbox = driver.find_element_by_id("message-input")
+		# frame = driver.find_element_by_xpath('//frame[@id="frame"]')
+		# driver.switch_to.frame(frame)
+		chatbox = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID,"message-input"))) 
+		# chatbox = driver.find_element_by_id("message-input")
 		chatbox.send_keys(wish)
 		chatbox.send_keys(Keys.RETURN)
 	except Exception as e:
@@ -121,7 +124,3 @@ sleep(3)
 print('Successfully Executed')
 # driver.close() # to close the browser and driver
 # driver.quit() #closes all the tabs
-
-# CSS ID: .find_element_by_id(“id-search-field”)
-# DOM Path: .find_element_by_xpath(“//input[@id=’id-search-field’]”)
-# CSS class: .find_element_by_class_name(“search-field”)
