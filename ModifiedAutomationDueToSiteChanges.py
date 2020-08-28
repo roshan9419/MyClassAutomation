@@ -106,7 +106,7 @@ def wishTeacher():
 	now = datetime.datetime.now()
 	if(now.hour<12):
 		wish="Good Morning"
-	elif(now.hour>=12 and now.hour<=24):
+	elif(now.hour>=12 and now.hour<=15):
 		wish="Good Afternoon"
 	else:
 		wish="Good Evening"
