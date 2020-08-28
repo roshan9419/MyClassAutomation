@@ -1,11 +1,6 @@
 from time import sleep
 import datetime
 import os
-# from Audio import speak
-
-# speak("Welcome Boss, how are you")
-# print("gfdg")
-# quit()
 
 try:
 	from selenium import webdriver
