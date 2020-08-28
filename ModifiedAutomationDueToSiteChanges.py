@@ -138,5 +138,4 @@ except:
 goToClass()
 sleep(3)
 print('Pass: Successfully Executed')
-# driver.close() # to close the browser and driver
 # driver.quit() #closes all the tabs
