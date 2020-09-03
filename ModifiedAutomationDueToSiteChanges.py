@@ -80,7 +80,6 @@ def goToClass():
 def joinClass():
 	try:
 		joinButton = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="meetingSummary"]/div/div/a')))
-		# joinButton = driver.find_element_by_xpath('//*[@id="meetingSummary"]/div/div/a')
 		joinButton.click()
 	except Exception as e:
 		print("Class is Not Started Yet")
