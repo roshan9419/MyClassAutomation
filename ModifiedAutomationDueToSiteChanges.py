@@ -31,19 +31,19 @@ except Exception as e:
 	quit()
 
 def login():
-	sleep(1)
-	driver.get("https://myclass.lpu.in/") #due to MyClass site modification
-	print()
+	# sleep(1)
+	# driver.get("https://myclass.lpu.in/") #due to MyClass site modification
+	# print()
 	try:
-		user_field = driver.find_element_by_xpath('//*[@id="txtUserName"]')
+		user_field = driver.find_element_by_xpath('/html/body/div[2]/div/form/div[6]/input[1]')
 		user_field.send_keys("RegID")
-		pass_field = driver.find_element_by_xpath('//*[@id="txtPassword"]')
-		pass_field.send_keys("Password")
-		# pass_field.send_keys(Keys.RETURN)
+		pass_field = driver.find_element_by_xpath('/html/body/div[2]/div/form/div[6]/input[2]')
+		pass_field.send_keys("Pass")
+		pass_field.send_keys(Keys.RETURN)
 		
 		#Due to Captcha added in MyClass, manually type captcha
-		print('Please Enter Captcha Fast: ')
-		sleep(20) # time tiil you enter the captcha
+		# print('Please Enter Captcha Fast: ')
+		# sleep(20) # time tiil you enter the captcha
 	except Exception as e:
 		print("Fail: Something ocurred while logging !")
 		sleep(60)
